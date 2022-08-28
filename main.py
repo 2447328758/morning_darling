@@ -1,24 +1,23 @@
-from datetime import date, datetime, timedelta
+from datetime import  datetime, timedelta
 import math
 from wechatpy import WeChatClient, WeChatClientException
 from wechatpy.client.api import WeChatMessage
 import requests
-import os
 import random
 
 nowtime = datetime.utcnow() + timedelta(hours=8)  # 东八区时间
 today = datetime.strptime(str(nowtime.date()), "%Y-%m-%d") #今天的日期
 
-start_date = os.getenv('START_DATE')
-city = os.getenv('CITY')
-birthday = os.getenv('BIRTHDAY')
+start_date = "2022-08-28"
+city = "郑州"
+birthday = "10-29"
 
-app_id = os.getenv('APP_ID')
-app_secret = os.getenv('APP_SECRET')
+app_id = "wxa8f269e52c01a14b"
+app_secret = "49e41fd6735a58c3876d1d142bbe4da3"
 
-user_ids = os.getenv('USER_ID', '').split("\n")
-template_id = os.getenv('TEMPLATE_ID')
-
+user_ids = ["o67Nj6v-FDWQ_p2gKtICjEEpInaE"]
+#template_id = "E8mpFLi9S2pUZBs6Sugk2NLmCsDzolBeaa4nggLJnzs"
+template_id="EEnw9x6aste9WFoOcCICYJsn-F35c53TdtGX3qt22t4"
 if app_id is None or app_secret is None:
   print('请设置 APP_ID 和 APP_SECRET')
   exit(422)
@@ -37,7 +36,9 @@ def get_weather():
     print('请设置城市')
     return None
   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+  #url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=北京"
   res = requests.get(url).json()
+  print(type(res))
   if res is None:
     return None
   weather = res['data']['list'][0]
@@ -162,3 +163,4 @@ if __name__ == '__main__':
     exit(502)
 
   print("发送了" + str(count) + "条消息")
+  # print(get_weather())
